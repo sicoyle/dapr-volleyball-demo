@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
+	pkg "github.com/dapr-volleyball-demo/pkg"
 	daprd "github.com/dapr/go-sdk/service/http"
 	"github.com/gorilla/mux"
 
@@ -32,7 +34,7 @@ func newDaprClient() (dapr.Client, func()) {
 func main() {
 	defer cancel()
 	router := mux.NewRouter()
-	router.HandleFunc("/scoreboard", scoreboardHandler)
+	router.HandleFunc("/scoreboard/{gameID}", scoreboardHandler)
 	srv := daprd.NewServiceWithMux(":8080", router)
 
 	// Start the Dapr service
@@ -42,8 +44,23 @@ func main() {
 }
 
 func scoreboardHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	gameID := vars["gameID"]
+	id, err := strconv.Atoi(gameID)
+	if err != nil {
+		log.Fatalf("error converting id %v", err)
+	}
+
+	gameReq := pkg.GameRequest{
+		ID: id,
+	}
+	b, err := json.Marshal(gameReq)
+	if err != nil {
+		log.Fatalf("error unmarshalling into game %v", err.Error())
+	}
+
 	content := &dapr.DataContent{
-		Data:        []byte(`{"round":45,"team1Score":0,"team2Score":0}`),
+		Data:        b,
 		ContentType: "application/json",
 	}
 

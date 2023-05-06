@@ -10,20 +10,14 @@ import (
 	"os"
 	"strconv"
 
+	pkg "github.com/dapr-volleyball-demo/pkg"
+
 	client "github.com/dapr/go-sdk/client"
 	"github.com/dapr/go-sdk/service/common"
 	dapr "github.com/dapr/go-sdk/service/http"
 )
 
 const stateStoreComponentName = "statestore"
-
-// Score holds the score of the team who just made a point
-// Scoreboard holds the current score of the volleyball game.
-type Scoreboard struct {
-	Round      int `json:"round"`
-	Team1Score int `json:"team1Score"`
-	Team2Score int `json:"team2Score"`
-}
 
 var sub = &common.Subscription{
 	PubsubName: "gamepubsub",
@@ -54,6 +48,7 @@ func main() {
 	}
 
 	// Start the server
+	log.Printf("starting scoreboard service")
 	err = s.Start()
 	if err != nil && err != http.ErrServerClosed {
 		log.Fatalf("error listenning: %v", err)
@@ -86,18 +81,25 @@ func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err er
 	}
 
 	// Parse the incoming score message
-	var score Scoreboard
+	var game pkg.Game
+	err = json.Unmarshal(e.RawData, &game)
+	if err != nil {
+		log.Fatalf("error unmarshalling into game %v", err.Error())
+		// return nil, err
+	}
+
 	// Save state into the state store
-	err = client.SaveState(context.Background(), stateStoreComponentName, strconv.Itoa(score.Round), e.RawData, nil)
+	key := "game_" + strconv.Itoa(game.ID)
+	err = client.SaveState(context.Background(), stateStoreComponentName, key, e.RawData, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Saved Score:", string(e.RawData))
+	fmt.Println("Saved game score:", string(e.RawData))
 
 	return false, nil
 }
 
-// curl -X POST http://localhost:6006/scoreboard -H "Content-Type: application/json" -d '{"round": 45}'
+// curl -X POST http://localhost:6006/scoreboard -H "Content-Type: application/json" -d '{"id": 0}'
 func getGameScoreboardHandler(ctx context.Context, in *common.InvocationEvent) (out *common.Content, err error) {
 	if in == nil {
 		err = errors.New("invocation parameter required")
@@ -108,21 +110,22 @@ func getGameScoreboardHandler(ctx context.Context, in *common.InvocationEvent) (
 		in.ContentType, in.Verb, in.QueryString, in.Data,
 	)
 
-	var scoreboardReq Scoreboard
-	err = json.Unmarshal(in.Data, &scoreboardReq)
+	var gameReq pkg.GameRequest
+	err = json.Unmarshal(in.Data, &gameReq)
 	if err != nil {
-		log.Printf("error unmarshalling into scoreboardReq")
+		log.Printf("error unmarshalling into gameReq")
 		return nil, err
 	}
 
-	// Get the state from the state store using the game UID
+	// Get the state from the state store using the game ID
 	client, err := client.NewClient()
 	if err != nil {
 		log.Fatal(err)
 	}
-	item, err := client.GetState(context.Background(), stateStoreComponentName, "0", nil)
+	key := "game_" + strconv.Itoa(gameReq.ID)
+	item, err := client.GetState(context.Background(), stateStoreComponentName, key, nil)
 	if err != nil {
-		log.Printf("error getting state for id %v", &scoreboardReq.Round)
+		log.Printf("error getting state for id %d", &gameReq.ID)
 		return
 	}
 	log.Printf("string value %s", string(item.Value))
@@ -133,29 +136,4 @@ func getGameScoreboardHandler(ctx context.Context, in *common.InvocationEvent) (
 		DataTypeURL: in.DataTypeURL,
 	}
 	return
-}
-
-func getGameScoreboard(w http.ResponseWriter, r *http.Request) {
-	// Get the game UID from the URL path
-	gameUID := r.URL.Query().Get("gameUID")
-
-	// Get the state from the state store using the game UID
-	client, err := client.NewClient()
-	if err != nil {
-		log.Fatal(err)
-	}
-	item, err := client.GetState(context.Background(), stateStoreComponentName, gameUID, nil)
-	if err != nil {
-		http.Error(w, "Error getting state from store", http.StatusInternalServerError)
-		return
-	}
-
-	// Unmarshal the state and return it as the response
-	var scoreboard Scoreboard
-	err = json.Unmarshal(item.Value, &scoreboard)
-	if err != nil {
-		http.Error(w, "Error unmarshaling state", http.StatusInternalServerError)
-		return
-	}
-	json.NewEncoder(w).Encode(scoreboard)
 }
