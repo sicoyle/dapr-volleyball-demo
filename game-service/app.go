@@ -55,5 +55,7 @@ func scoreboardHandler(w http.ResponseWriter, r *http.Request) {
 
 	// process the response
 	fmt.Println(string(resp))
+	w.Header().Set("Access-Control-Allow-Origin", "*") // add this line to set the CORS header
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(string(resp))
 }
