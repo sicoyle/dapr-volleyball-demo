@@ -137,3 +137,45 @@ func getGameScoreboardHandler(ctx context.Context, in *common.InvocationEvent) (
 	}
 	return
 }
+
+// func getTeamScoreboard(w http.ResponseWriter, r *http.Request) {
+// 	// Get the team UID from the URL path
+// 	teamUID := r.URL.Query().Get("teamUID")
+
+// 	// Get the state from the state store for all games
+// 	client, err := client.NewClient()
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	items, err := client.GetBulkState(context.Background(), stateStoreComponentName, "")
+// 	if err != nil {
+// 		http.Error(w, "Error getting state from store", http.StatusInternalServerError)
+// 		return
+// 	}
+
+// 	// Filter the states for the team UID and calculate the total score
+// 	var teamScore int
+// 	for _, item := range items {
+// 		var scoreboard Scoreboard
+// 		err = json.Unmarshal(item.Value, &scoreboard)
+// 		if err != nil {
+// 			http.Error(w, "Error unmarshaling state", http.StatusInternalServerError)
+// 			return
+// 		}
+// 		if scoreboard.Team1 == teamUID {
+// 			teamScore += scoreboard.Team1Score
+// 		}
+// 		if scoreboard.Team2 == teamUID {
+// 			teamScore += scoreboard.Team2Score
+// 		}
+// 	}
+
+// 	// Return the team score as the response
+// 	json.NewEncoder(w).Encode(struct {
+// 		TeamUID string `json:"teamUID"`
+// 		Score   int    `json:"score"`
+// 	}{
+// 		TeamUID: teamUID,
+// 		Score:   teamScore,
+// 	})
+// }

@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
+import process from 'process'; // Import the process object
+
 
 const App = () => {
   const [gameID, setGameID] = useState('');
   const [data, setData] = useState(null);
 
   const fetchScoreboard = () => {
-    fetch(`http://localhost:8080/scoreboard/${gameID}`)
-      .then(response => response.json())
+    fetch(`http://game-service:80/scoreboard/${gameID}`, {  mode: 'no-cors'
+  })
+      .then(response =>  {//response.json())
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => {
         setData(data);
       })

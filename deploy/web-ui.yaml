@@ -1,0 +1,56 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: web-ui
+  labels:
+    app: web-ui
+spec:
+  selector:
+    app: web-ui
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-ui
+  labels:
+    app: web-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-ui
+  template:
+    metadata:
+      labels:
+        app: web-ui
+      annotations:
+        dapr.io/enabled: "false"
+        dapr.io/app-id: "web-ui"
+        dapr.io/app-protocol: "http"
+        dapr.io/app-port: "3000"
+        dapr.io/enable-api-logging: "true"
+        # dapr.io/dapr-http-port: "3504"
+        # dapr.io/config: "appconfig"
+        # dapr.io/enable-debug: "true"
+    spec:
+      # imagePullSecrets:
+      # - name: "regcred"
+      containers:
+      - name: web-ui
+        image: sam-test-ui:latest
+        env:
+        - name: APP_PORT
+          value: "3000"
+        # - name: DAPR_HTTP_PORT
+        #   value: "3504"      
+        - name: API_URL
+          value: http://game-service.default.svc.cluster.local:80
+        ports:
+        - containerPort: 3000
+        imagePullPolicy: Never

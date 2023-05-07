@@ -35,9 +35,10 @@ func main() {
 	defer cancel()
 	router := mux.NewRouter()
 	router.HandleFunc("/scoreboard/{gameID}", scoreboardHandler)
-	srv := daprd.NewServiceWithMux(":8080", router)
+	srv := daprd.NewServiceWithMux(":3001", router)
 
 	// Start the Dapr service
+	log.Printf("starting service game-service")
 	if err := srv.Start(); err != nil && err != http.ErrServerClosed {
 		log.Printf("error: %v", err)
 	}
@@ -74,5 +75,7 @@ func scoreboardHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(string(resp))
 	w.Header().Set("Access-Control-Allow-Origin", "*") // add this line to set the CORS header
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	json.NewEncoder(w).Encode(string(resp))
 }
