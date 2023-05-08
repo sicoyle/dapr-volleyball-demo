@@ -1,0 +1,17 @@
+# apiVersion: dapr.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: gamepubsub
+#   namespace: dapr-volleyball
+# spec:
+#   type: pubsub.redis
+#   version: v1
+#   metadata:
+#   - name: redisHost
+#     value: redis-master.redis.svc.cluster.local:6379
+#   - name: redisPassword
+#     secretKeyRef:
+#       key: redis-password
+#       name: redis-password
+# auth:
+#   secretStore: kubernetes
