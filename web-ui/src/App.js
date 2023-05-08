@@ -17,7 +17,21 @@ const App = () => {
 
   return (
     <>
-      <div>
+      <div className="navbar-container">
+        <nav className="navbar">
+          <div className="navbar-item">
+            <a href="https://dapr.io/" target="_blank" rel="noopener noreferrer">Dapr</a>
+            <a href={process.env.REACT_APP_ZIPKIN_URL}>Zipkin</a>
+          </div>
+        </nav>
+      </div>
+
+      <div className="welcome">
+        <p>Welcome to our Dapr Volleyball Demo!</p>
+      </div>
+
+
+      <div className="game-id-container">
         <label htmlFor="gameID">Enter Game ID:</label>
         <input type="text" id="gameID" value={gameID} onChange={e => setGameID(e.target.value)} />
         <button onClick={fetchScoreboard}>Get Game Score</button>
