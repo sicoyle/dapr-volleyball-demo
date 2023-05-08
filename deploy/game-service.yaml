@@ -33,8 +33,8 @@ spec:
       annotations:
         dapr.io/enabled: "true"
         dapr.io/app-id: "game-service"
+        dapr.io/app-protocol: "http"
         dapr.io/app-port: "3001"
-        dapr.io/enable-api-logging: "true"
         dapr.io/config: "config"
     spec:
       containers:

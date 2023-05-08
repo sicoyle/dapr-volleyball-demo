@@ -32,8 +32,6 @@ spec:
       annotations:
         dapr.io/enabled: "true"
         dapr.io/app-id: "game-sim"
-        dapr.io/enable-api-logging: "true"
-        dapr.io/app-termination-enabled: "true"
         dapr.io/config: "config"
     spec:
       containers:

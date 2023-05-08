@@ -33,7 +33,6 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "scoreboard"
         dapr.io/app-port: "3002"
-        dapr.io/enable-api-logging: "true"
         dapr.io/config: "config"
     spec:
       containers:

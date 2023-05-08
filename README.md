@@ -17,7 +17,6 @@ Dapr port: 3500
 
 ## Scoreboard API
 
-### Run locally:
 ```
 cd cmd/scoreboard
 go install ../../pkg/types.go 
@@ -37,7 +36,7 @@ Dapr port: 3500
 ## Game Service
 ```
 cd cmd/game-service
-dapr run --app-id gameservice --app-port 3001 --app-protocol http --dapr-http-port 3500 --resources-path ../../resources -- go run .
+dapr run --app-id game-service --app-port 3001 --app-protocol http --dapr-http-port 3500 --resources-path ../../resources -- go run .
 ```
 
 App Port: 3001
