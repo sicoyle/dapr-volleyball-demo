@@ -1,0 +1,21 @@
+kind: Component
+metadata:
+  name: gamepubsub
+  namespace: dapr-volleyball
+apiVersion: dapr.io/v1alpha1
+spec:
+  type: pubsub.kafka
+  version: v1
+  metadata:
+    - name: brokers
+      value: kafka.kafka.svc.cluster.local:9092
+    - name: authType
+      value: password
+    - name: saslUsername
+      value: user
+    - name: saslPassword
+      secretKeyRef:
+        key: kafka-password
+        name: kafka-password
+    - name: disableTls
+      value: 'true'
