@@ -10,5 +10,5 @@ spec:
     value: localhost:6379
   - name: redisPassword
     value: ""
-  - name: statestore
+  - name: actorStateStore
     value: "true"
