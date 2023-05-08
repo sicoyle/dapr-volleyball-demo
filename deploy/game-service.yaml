@@ -44,7 +44,7 @@ spec:
       # - name: "regcred"
       containers:
       - name: game-service
-        image: game-service:latest
+        image: alicejgibbons/game-service:latest
         env:
         - name: APP_PORT
           value: "3001"
@@ -52,4 +52,4 @@ spec:
           value: "3501"
         ports:
         - containerPort: 3001
-        imagePullPolicy: Never
+        imagePullPolicy: Always

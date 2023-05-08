@@ -5,7 +5,8 @@ const App = () => {
   const [data, setData] = useState(null);
 
   const fetchScoreboard = () => {
-    fetch(`http://localhost:3001/scoreboard/${gameID}`)
+    fetch(`http://34.83.144.253:80/scoreboard/${gameID}`)
+    //fetch(`http://localhost:3001/scoreboard/${gameID}`)
       .then(response => response.json())
       .then(data => {
         setData(data);

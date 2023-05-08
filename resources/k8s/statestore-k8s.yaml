@@ -7,8 +7,12 @@ spec:
   version: v1
   metadata:
   - name: redisHost
-    value: redis-master.default.svc.cluster.local:6379
+    value: redis-master.redis.svc.cluster.local:6379
   - name: redisPassword
-    value: Cy1drF8fXE
-  - name: statestore
+    secretKeyRef:
+      key: redis-password
+      name: redis-password
+  - name: actorStateStore
     value: "true"
+auth:
+  secretStore: kubernetes

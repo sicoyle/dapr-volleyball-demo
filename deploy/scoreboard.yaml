@@ -43,7 +43,7 @@ spec:
       # - name: "regcred"
       containers:
       - name: scoreboard
-        image: scoreboard:latest
+        image: alicejgibbons/scoreboard:latest
         env:
         - name: APP_PORT
           value: "3002"
@@ -51,4 +51,4 @@ spec:
           value: "3500"
         ports:
         - containerPort: 3002
-        imagePullPolicy: Never
+        imagePullPolicy: Always

@@ -30,11 +30,11 @@ spec:
       labels:
         app: web-ui
       annotations:
-        dapr.io/enabled: "false"
-        dapr.io/app-id: "web-ui"
-        dapr.io/app-protocol: "http"
-        dapr.io/app-port: "3000"
-        dapr.io/enable-api-logging: "true"
+        # dapr.io/enabled: "false"
+        # dapr.io/app-id: "web-ui"
+        # dapr.io/app-protocol: "http"
+        # dapr.io/app-port: "3000"
+        # dapr.io/enable-api-logging: "true"
         # dapr.io/dapr-http-port: "3504"
         # dapr.io/config: "appconfig"
         # dapr.io/enable-debug: "true"
@@ -43,7 +43,7 @@ spec:
       # - name: "regcred"
       containers:
       - name: web-ui
-        image: sam-test-ui:latest
+        image: alicejgibbons/game-ui:latest
         env:
         - name: APP_PORT
           value: "3000"
@@ -53,4 +53,4 @@ spec:
           value: http://game-service.default.svc.cluster.local:80
         ports:
         - containerPort: 3000
-        imagePullPolicy: Never
+        imagePullPolicy: Always
