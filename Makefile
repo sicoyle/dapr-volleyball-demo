@@ -3,7 +3,7 @@
 GO_SERVICES := game-service scoreboard game-sim
 
 docker-build-ui:
-	docker build -t sam-test-ui:latest --platform=linux/amd64 . -f docker/ui.Dockerfile
+	docker build -t web-ui:latest --platform=linux/amd64 . -f docker/ui.Dockerfile
 
 docker-build: docker-build-ui
 	for service in $(GO_SERVICES); do \

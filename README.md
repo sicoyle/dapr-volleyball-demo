@@ -2,7 +2,7 @@
 
 ## Volleyball Game Simulator
 
-Run locally:
+### Run locally:
 
 ```
 cd cmd/game-sim
@@ -11,13 +11,13 @@ go build .
 dapr run --app-id game-sim --app-protocol http --dapr-http-port 3502 --resources-path ../../resources -- go run .
 ```
 
-Run on K8s:
-App port: 3003?
+No app port
+Dapr port: 3500
 
 
 ## Scoreboard API
 
-Run locally:
+### Run locally:
 ```
 cd cmd/scoreboard
 go install ../../pkg/types.go 
@@ -30,9 +30,8 @@ dapr run \
   --resources-path=../../resources -- go run .
 ```
 
-Run on K8s:
-Port 6006 - 3002??
-Dapr port:3500
+App port 6006 - 3002??
+Dapr port: 3500
 
 
 ## Game Service

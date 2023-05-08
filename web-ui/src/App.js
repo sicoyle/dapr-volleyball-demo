@@ -5,8 +5,9 @@ const App = () => {
   const [data, setData] = useState(null);
 
   const fetchScoreboard = () => {
-    fetch(`http://34.83.144.253:80/scoreboard/${gameID}`)
-    //fetch(`http://localhost:3001/scoreboard/${gameID}`)
+    const url = process.env.REACT_APP_GAME_SERVICE_URL + "/scoreboard/"
+    console.log("Calling: " + url + gameID)
+    fetch(url + gameID)
       .then(response => response.json())
       .then(data => {
         setData(data);

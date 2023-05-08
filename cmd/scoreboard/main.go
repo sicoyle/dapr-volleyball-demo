@@ -73,6 +73,7 @@ func echoHandler(ctx context.Context, in *common.InvocationEvent) (out *common.C
 	return
 }
 
+// updateGameScore
 func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err error) {
 	fmt.Printf("Subscriber received data %v and rawdata %v\n", e.Data, e.RawData)
 	client, err := client.NewClient()

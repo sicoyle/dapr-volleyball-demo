@@ -29,28 +29,10 @@ spec:
     metadata:
       labels:
         app: web-ui
-      annotations:
-        # dapr.io/enabled: "false"
-        # dapr.io/app-id: "web-ui"
-        # dapr.io/app-protocol: "http"
-        # dapr.io/app-port: "3000"
-        # dapr.io/enable-api-logging: "true"
-        # dapr.io/dapr-http-port: "3504"
-        # dapr.io/config: "appconfig"
-        # dapr.io/enable-debug: "true"
     spec:
-      # imagePullSecrets:
-      # - name: "regcred"
       containers:
       - name: web-ui
-        image: alicejgibbons/game-ui:latest
-        env:
-        - name: APP_PORT
-          value: "3000"
-        # - name: DAPR_HTTP_PORT
-        #   value: "3504"      
-        - name: API_URL
-          value: http://game-service.default.svc.cluster.local:80
+        image: alicejgibbons/web-ui:latest
         ports:
         - containerPort: 3000
         imagePullPolicy: Always

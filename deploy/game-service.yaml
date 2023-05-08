@@ -33,23 +33,13 @@ spec:
       annotations:
         dapr.io/enabled: "true"
         dapr.io/app-id: "game-service"
-        dapr.io/app-protocol: "http"
         dapr.io/app-port: "3001"
         dapr.io/enable-api-logging: "true"
-        dapr.io/dapr-http-port: "3501"
-        # dapr.io/config: "appconfig"
-        # dapr.io/enable-debug: "true"
+        dapr.io/config: "config"
     spec:
-      # imagePullSecrets:
-      # - name: "regcred"
       containers:
       - name: game-service
         image: alicejgibbons/game-service:latest
-        env:
-        - name: APP_PORT
-          value: "3001"
-        - name: DAPR_HTTP_PORT
-          value: "3501"
         ports:
         - containerPort: 3001
         imagePullPolicy: Always

@@ -32,23 +32,16 @@ spec:
       annotations:
         dapr.io/enabled: "true"
         dapr.io/app-id: "scoreboard"
-        dapr.io/app-protocol: "http"
         dapr.io/app-port: "3002"
-        dapr.io/dapr-http-port: "3500"
         dapr.io/enable-api-logging: "true"
-        # dapr.io/config: "appconfig"
-        # dapr.io/enable-debug: "true"
+        dapr.io/config: "config"
     spec:
-      # imagePullSecrets:
-      # - name: "regcred"
       containers:
       - name: scoreboard
         image: alicejgibbons/scoreboard:latest
         env:
         - name: APP_PORT
           value: "3002"
-        - name: DAPR_HTTP_PORT
-          value: "3500"
         ports:
         - containerPort: 3002
         imagePullPolicy: Always

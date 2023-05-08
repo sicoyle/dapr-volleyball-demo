@@ -72,21 +72,25 @@
 
 
 # Build stage
-FROM node:16-alpine3.14 AS build
-RUN apk add --no-cache git
+# FROM node:16-alpine3.14 AS build
+FROM node:16-alpine3.14
+# RUN apk add --no-cache git
 WORKDIR /app
 COPY web-ui/package*.json ./
 RUN npm install
 COPY web-ui/ ./
-# RUN npm run build
+RUN npm run build --production
 
 # Final stage
 # FROM alpine:3.14
 # WORKDIR /app
 # COPY --from=build /app/build/ ./ui/
-ENV API_URL="http://game-service.default.svc.cluster.local:80"
+#ENV API_URL="http://game-service.default.svc.cluster.local:80"
+# Install `serve` to run the application in production.
+RUN npm install -g serve
 EXPOSE 80
-CMD ["npm", "start"]
+#CMD ["npm", "start"]
+CMD serve -s build
 
 # Build stage
 # FROM node:16-alpine3.14 AS build
