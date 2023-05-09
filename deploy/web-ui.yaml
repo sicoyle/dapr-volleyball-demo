@@ -1,0 +1,38 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: web-ui
+  labels:
+    app: web-ui
+spec:
+  selector:
+    app: web-ui
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-ui
+  labels:
+    app: web-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-ui
+  template:
+    metadata:
+      labels:
+        app: web-ui
+    spec:
+      containers:
+      - name: web-ui
+        image: alicejgibbons/web-ui:latest
+        ports:
+        - containerPort: 3000
+        imagePullPolicy: Always

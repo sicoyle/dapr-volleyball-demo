@@ -1,0 +1,21 @@
+{
+    "data": {
+        "id": 4,
+        "round": 48,
+        "team1Name": "team4",
+        "team1Score": 23,
+        "team2Name": "team5",
+        "team2Score": 25
+    },
+    "datacontenttype": "application/json",
+    "id": "ce35d949-99c1-42cf-a61a-44fe8efef090",
+    "pubsubname": "gamepubsub",
+    "source": "game-sim",
+    "specversion": "1.0",
+    "time": "2023-05-07T19:18:21-06:00",
+    "topic": "game",
+    "traceid": "00-154b9b170f64eb463214b89f6ba8b56e-77803d3c71871516-01",
+    "traceparent": "00-154b9b170f64eb463214b89f6ba8b56e-77803d3c71871516-01",
+    "tracestate": "",
+    "type": "com.dapr.event.sent"
+}

@@ -1,0 +1,45 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: game-service
+  labels:
+    app: game-service
+spec:
+  selector:
+    app: game-service
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3001
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: game-service
+  labels:
+    app: game-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: game-service
+  template:
+    metadata:
+      labels:
+        app: game-service
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "game-service"
+        dapr.io/app-protocol: "http"
+        dapr.io/app-port: "3001"
+        dapr.io/config: "config"
+    spec:
+      containers:
+      - name: game-service
+        image: alicejgibbons/game-service:latest
+        ports:
+        - containerPort: 3001
+        imagePullPolicy: Always

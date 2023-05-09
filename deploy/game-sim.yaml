@@ -1,0 +1,42 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: game-sim
+  labels:
+    app: game-sim
+spec:
+  selector:
+    app: game-sim
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3003
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: game-sim
+  labels:
+    app: game-sim
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: game-sim
+  template:
+    metadata:
+      labels:
+        app: game-sim
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "game-sim"
+        dapr.io/config: "config"
+    spec:
+      containers:
+      - name: game-sim
+        image: alicejgibbons/game-sim:latest
+        ports:
+        - containerPort: 3003
+        imagePullPolicy: Always

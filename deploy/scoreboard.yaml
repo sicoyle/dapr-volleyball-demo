@@ -1,0 +1,46 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: scoreboard
+  labels:
+    app: scoreboard
+spec:
+  selector:
+    app: scoreboard
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3002
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scoreboard
+  labels:
+    app: scoreboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scoreboard
+  template:
+    metadata:
+      labels:
+        app: scoreboard
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "scoreboard"
+        dapr.io/app-port: "3002"
+        dapr.io/config: "config"
+    spec:
+      containers:
+      - name: scoreboard
+        image: alicejgibbons/scoreboard:latest
+        env:
+        - name: APP_PORT
+          value: "3002"
+        ports:
+        - containerPort: 3002
+        imagePullPolicy: Always
