@@ -1,0 +1,16 @@
+### Run workflow dapr run --app-id workflow --app-port 5000 --dapr-http-port 3500 -- dotnet run 
+@dapr_url=http://localhost:3500 
+@workflow_id={{$guid}}
+
+// @name wfrequest
+POST {{dapr_url}}/v1.0-beta1/workflows/dapr/VolleyballRoundWorkflow/start?instanceID={{workflow_id}}
+Content-Type: application/json
+
+{
+    "teams": ["team1", "team2", "team3", "team4", "team5", "team6"],
+    "round": 1
+}
+
+### Get status
+@workflow_id_response={{wfrequest.response.body.instanceID}}
+GET {{dapr_url}}/v1.0-alpha1/workflows/dapr/{{workflow_id_response}}
