@@ -36,7 +36,7 @@ dapr run \
   --app-port 3002 \
   --app-id scoreboard \
   --app-protocol http \
-  --dapr-http-port 3500 \
+  --dapr-http-port 3501 \
   --resources-path=../../resources -- go run .
 ```
 

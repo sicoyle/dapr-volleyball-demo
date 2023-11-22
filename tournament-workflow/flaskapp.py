@@ -12,7 +12,7 @@ app = Flask(__name__)
 settings = Settings()
 
 counter = 0
-instanceId = "exampleInstanceID26"
+instanceId = "exampleInstanceID33"
 workflowComponent = "dapr"
 workflowName = "hello_world_wf"
 inputData = "Hi Counter!"
@@ -55,9 +55,15 @@ def call_child_workflow(ctx: WorkflowActivityContext, input):
     else:
         print(f"Failed to start child workflow. Status code: {response.status_code}, Response: {response.text}")
 
-    
+# TODO do we want this different output binding????
+# TODO fix this data and figure out what I'm getting to save!
 def generate_report(ctx: WorkflowActivityContext, input):
     print(f'Sam success work on report!', flush=True)
+    with DaprClient() as client:
+        #Using Dapr SDK to invoke output binding
+        resp = client.invoke_binding("volleyball", "create", json.dumps("hi"))
+        print(f'Sending message: ' + "hi")
+        print(f'Sending message: {resp}' + "hi")
 
 def hello_act(ctx: WorkflowActivityContext, input):
     global counter
